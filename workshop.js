@@ -30,11 +30,29 @@ function getAddressPosition(address) {
 }
 
 function getCurrentTemperatureAtPosition(position) {
-
+  var latitude = position.lat;
+  var longitude = position.lng;
+  var darkSky = ('https://api.darksky.net/forecast/68ae7d38fb51db27bc7d79139fe20b2a/' + latitude + "," + longitude);
+  return request(darkSky)
+    
+    .then(
+        function(response){
+        var r = JSON.parse(response);
+        var currentTemp = r.currently.temperature;
+        return currentTemp;
+      }  
+    )
+  
 }
 
 function getCurrentTemperature(address) {
-
+  getAddressPosition(address)
+    .then(
+      function(response){
+        getCurrentTemperatureAtPosition(response);
+      }
+      );
+      
 }
 
 function getDistanceFromIss(address) {
