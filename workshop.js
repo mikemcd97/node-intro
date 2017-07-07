@@ -12,7 +12,11 @@ function getIssPosition() {
       var r = JSON.parse(response)
       var lat = r.iss_position.latitude;
       var lng= r.iss_position.longitude;
-      return r;
+      var spot = {
+        lat: lat,
+        lng: lng
+        }
+      return spot;
     }
   )
 }
@@ -56,5 +60,14 @@ function getCurrentTemperature(address) {
 }
 
 function getDistanceFromIss(address) {
-
+  Promise.all(
+    [getIssPosition(), getAddressPosition(address)]
+    )
+    .then(
+      function(response){
+        getDistance(response[0], response[1]);
+        console.log(response[0], response[1])
+      }
+      );
 }
+
